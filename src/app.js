@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const width = 10;
     const bombAmount = 20;
     let squares = [];
+    let isGameOver = false;
 
     function createBoard() {
 
@@ -20,6 +21,11 @@ document.addEventListener('DOMContentLoaded', () => {
             square.classList.add(shuffledArray[i]);
             grid.appendChild(square);
             squares.push(square);
+
+            // normal click
+            square.addEventListener('click', function(e) {
+                click(square);
+            });
 
         }
     
@@ -62,4 +68,29 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     createBoard();
+
+    // click on square actions
+    function click(square) {
+        let currentId = square.id;
+        if (isGameOver) return;
+        if (square.classList.contains('checked') || square.classList.contains('flag')) return;
+        if (square.classList.contains('bomb')) {
+            console.log('game over');
+        } else {
+            let total = square.getAttribute('data');
+            if (total != 0) {
+                square.classList.add('checked');
+                square.innerHTML = total;
+                return;
+            }
+            checkSquare(square, currentId);
+        }
+        square.classList.add('checked');
+
+    }
+
+
+
+
+
 })
